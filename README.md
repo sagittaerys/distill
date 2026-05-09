@@ -39,7 +39,7 @@ This is a local extension and is **not listed on the Chrome Web Store**. Follow 
 **1. Download the repository**
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/distill-extension.git
+git clone https://github.com/sagittaerys/distill-extension.git
 ```
 
 Or download as a ZIP from GitHub and extract it.
