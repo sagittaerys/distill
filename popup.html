@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Distill</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">
+      <div class="logo-mark">✦</div>
+      <span class="logo-text">Distill</span>
+    </div>
+    <div class="header-actions">
+      <button class="icon-btn hidden" id="copy-btn" title="Copy summary (Ctrl+C)">⎘</button>
+      <button class="icon-btn hidden" id="clear-btn" title="Clear summary">✕</button>
+      <button class="icon-btn" id="settings-btn" title="Settings">⚙</button>
+    </div>
+  </div>
+
+  <!-- Page info -->
+  <div class="page-info" id="page-info" style="display:none">
+    <div class="page-title" id="page-title">Loading page info…</div>
+    <div class="page-url" id="page-url"></div>
+  </div>
+
+  <!-- Main scrollable content -->
+  <div class="content">
+
+    <!-- API Key Setup view -->
+    <div id="setup-view">
+      <div class="setup-title">Set up your API key</div>
+      <div class="setup-desc">
+        Distill uses the Gemini API to generate summaries. Your key is stored locally and never leaves your device.<br /><br />
+        Get a <strong>free</strong> key at <a href="https://aistudio.google.com" target="_blank">aistudio.google.com</a> — no credit card needed.
+      </div>
+      <div class="input-group">
+        <label class="input-label" for="api-key-input">Gemini API Key</label>
+        <input
+          type="password"
+          id="api-key-input"
+          class="input-field"
+          placeholder="AIza…"
+          autocomplete="off"
+          spellcheck="false"
+        />
+      </div>
+      <button class="btn-primary" id="save-key-btn">Save & Continue →</button>
+    </div>
+
+    <!-- Main view (shown after key is saved) -->
+    <div id="main-view">
+
+      <!-- Idle state: just the summarize button -->
+      <div id="idle-state">
+        <button class="btn-primary" id="summarize-btn">✦ Summarize this page</button>
+      </div>
+
+      <!-- Loading state -->
+      <div id="loading-state">
+        <div class="spinner"></div>
+        <div class="loading-text">Distilling the page…</div>
+        <div class="loading-steps" id="loading-step">Extracting content</div>
+      </div>
+
+      <!-- Error state -->
+      <div id="error-state">
+        <div class="error-title">⚠ Something went wrong</div>
+        <div class="error-msg" id="error-msg"></div>
+      </div>
+
+      <!-- Summary output -->
+      <div id="summary-state" style="display:none; flex-direction:column; gap:12px;">
+
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px;">
+          <div class="meta-row" id="meta-row"></div>
+          <span class="cache-badge hidden" id="cache-badge">⚡ Cached</span>
+        </div>
+
+        <!-- TL;DR -->
+        <div class="tldr-card">
+          <div class="card-label">TL;DR</div>
+          <div class="tldr-text" id="tldr-text"></div>
+        </div>
+
+        <!-- Key points -->
+        <div class="section">
+          <div class="section-header">Key Points</div>
+          <ul class="bullet-list" id="bullet-list"></ul>
+        </div>
+
+        <!-- Key insights -->
+        <div class="section">
+          <div class="section-header">Insights</div>
+          <div id="insights-list" style="display:flex;flex-direction:column;gap:5px;"></div>
+        </div>
+
+        <!-- Topic tags -->
+        <div id="tags-row" style="display:flex;gap:5px;flex-wrap:wrap;"></div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="footer hidden" id="footer">
+    <button class="btn-secondary" id="re-summarize-btn" style="display:none">↺ Re-summarize</button>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
