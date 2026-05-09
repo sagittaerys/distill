@@ -1,5 +1,7 @@
-const AI_MODEL = "gemini-1.5-flash";
-const API_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${AI_MODEL}:generateContent`;
+const AI_MODEL = "llama-3.3-70b-versatile";
+const API_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
+
+
 
 const rateLimiter = {
   requests: [],
@@ -64,26 +66,20 @@ ${pageData.text}`;
 async function callAI(pageData, apiKey) {
   const { systemPrompt, userMessage } = buildPrompt(pageData);
 
-  
-  const response = await fetch(`${API_ENDPOINT}?key=${apiKey}`, {
+  const response = await fetch(API_ENDPOINT, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "Authorization": `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      system_instruction: {
-        parts: [{ text: systemPrompt }],
-      },
-      contents: [
-        {
-          role: "user",
-          parts: [{ text: userMessage }],
-        },
+      model: AI_MODEL,
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userMessage },
       ],
-      generationConfig: {
-        maxOutputTokens: 1024,
-        temperature: 0.3,
-      },
+      max_tokens: 1024,
+      temperature: 0.3,
     }),
   });
 
@@ -94,9 +90,7 @@ async function callAI(pageData, apiKey) {
   }
 
   const data = await response.json();
-
-//  response shape
-  const rawText = data.candidates?.[0]?.content?.parts?.[0]?.text || "";
+  const rawText = data.choices?.[0]?.message?.content || "";
 
   try {
     const cleaned = rawText.replace(/```json|```/g, "").trim();

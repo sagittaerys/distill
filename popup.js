@@ -273,8 +273,8 @@ async function copySummary() {
 
 saveKeyBtn.addEventListener("click", async () => {
   const key = apiKeyInput.value.trim();
-  // Gemini keys start with "AIza"
-  if (!key || !key.startsWith("AIza")) {
+ 
+  if (!key || !key.startsWith("gsk_")) {
     apiKeyInput.style.borderColor = "#f87171";
     setTimeout(() => (apiKeyInput.style.borderColor = ""), 1500);
     return;
